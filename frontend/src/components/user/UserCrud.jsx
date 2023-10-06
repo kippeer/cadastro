@@ -25,9 +25,12 @@ export default class UserCrud extends Component {
     }
 
     refreshList() {
-        const timestamp = new Date().getTime(); // Obtém um carimbo de data/hora único
-        const apiUrl = `${baseUrl}?timestamp=${timestamp}`; // Adiciona o carimbo de data/hora à URL da API
-        axios(apiUrl).then(resp => {
+        const config = {
+            headers: {
+                'Cache-Control': 'no-cache' // Adiciona o cabeçalho de controle de cache
+            }
+        };
+        axios.get(baseUrl, config).then(resp => {
             this.setState({ list: resp.data })
         })
     }
