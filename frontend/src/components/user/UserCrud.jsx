@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const headerProps = {
     icon: 'users',
     title: 'Usuários',
-    subtitle: 'Cadastro de usuários: Incluir, Listar, Alterar e Excluir'
+    subtitle: 'Cadastro de usuários: Incluir, Listar, Alterar e Excluir                                                                   Aperte f5 para atualizar os dados'
 }
 
 const baseUrl = 'https://backend-three-wine.vercel.app/users'
