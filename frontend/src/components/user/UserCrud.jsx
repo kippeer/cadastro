@@ -9,7 +9,7 @@ const headerProps = {
     icon: 'users',
     title: 'Usuários',
     subtitle: 'Cadastro de usuários: Incluir, Listar, Alterar e Excluir',
-    alerta:'PRECIONE F5 PARA ATUALIZAR OS DADOS'
+    alerta:'PRECIONE F5 PARA ATUALIZAR OS DADOS NO NAVEGADOR'
 }
 
 const baseUrl = 'https://backend-three-wine.vercel.app/users'
