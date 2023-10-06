@@ -47,6 +47,7 @@ export default class UserCrud extends Component {
             .then(resp => {
                 this.refreshList(); // Atualiza a lista após salvar
                 this.setState({ user: initialState.user })
+                window.location.reload(); // Recarrega a página
             })
     }
 
@@ -63,6 +64,7 @@ export default class UserCrud extends Component {
     remove(user) {
         axios.delete(`${baseUrl}/${user.id}`).then(resp => {
             this.refreshList(); // Atualiza a lista após excluir
+            window.location.reload(); // Recarrega a página
         })
     }
 
