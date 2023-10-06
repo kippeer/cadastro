@@ -47,7 +47,11 @@ export default class UserCrud extends Component {
             .then(resp => {
                 this.refreshList(); // Atualiza a lista após salvar
                 this.setState({ user: initialState.user })
-                window.location.reload(); // Recarrega a página
+
+                // Adiciona um atraso de 10 segundos antes de recarregar a página
+                setTimeout(() => {
+                    window.location.reload(); // Recarrega a página após o atraso
+                }, 10000);
             })
     }
 
@@ -64,7 +68,11 @@ export default class UserCrud extends Component {
     remove(user) {
         axios.delete(`${baseUrl}/${user.id}`).then(resp => {
             this.refreshList(); // Atualiza a lista após excluir
-            window.location.reload(); // Recarrega a página
+
+            // Adiciona um atraso de 10 segundos antes de recarregar a página
+            setTimeout(() => {
+                window.location.reload(); // Recarrega a página após o atraso
+            }, 10000);
         })
     }
 
