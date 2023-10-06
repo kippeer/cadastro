@@ -5,6 +5,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faPencilAlt, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+
 const headerProps = {
     icon: 'users',
     title: 'Usuários',
@@ -17,14 +18,11 @@ const initialState = {
     list: []
 }
 
+
 export default class UserCrud extends Component {
     state = { ...initialState }
 
     componentDidMount() {
-        this.refreshList();
-    }
-
-    refreshList() {
         axios(baseUrl).then(resp => {
             this.setState({ list: resp.data })
         })
@@ -40,25 +38,21 @@ export default class UserCrud extends Component {
         const url = user.id ? `${baseUrl}/${user.id}` : baseUrl
         axios[method](url, user)
             .then(resp => {
-                this.refreshList(); // Atualiza a lista após salvar
-                this.setState({ user: initialState.user })
+                const list = this.getUpdatedList(resp.data)
+                this.setState({ user: initialState.user, list })
             })
+    }
+
+    getUpdatedList(user, add = true) {
+        const list = this.state.list.filter(u => u.id !== user.id)
+        if (add) list.unshift(user)
+        return list
     }
 
     updateField(event) {
         const user = { ...this.state.user }
         user[event.target.name] = event.target.value
         this.setState({ user })
-    }
-
-    load(user) {
-        this.setState({ user })
-    }
-
-    remove(user) {
-        axios.delete(`${baseUrl}/${user.id}`).then(resp => {
-            this.refreshList(); // Atualiza a lista após excluir
-        })
     }
 
     renderForm() {
@@ -95,17 +89,30 @@ export default class UserCrud extends Component {
                 <div className="row">
                     <div className="col-12 d-flex justify-content-end">
                         <button className="btn btn-primary"
-                            onClick={() => this.save()}>
+                            onClick={e => this.save(e)}>
                             Salvar
                         </button>
                         <button className="btn btn-secondary ml-2"
-                            onClick={() => this.clear()}>
+                            onClick={e => this.clear(e)}>
                             Cancelar
                         </button>
                     </div>
                 </div>
             </div>
+
         )
+    }
+
+
+    load(user) {
+        this.setState({ user })
+    }
+
+    remove(user) {
+        axios.delete(`${baseUrl}/${user.id}`).then(resp => {
+            const list = this.getUpdatedList(user, false)
+            this.setState({ list })
+        })
     }
 
     renderTable() {
@@ -136,9 +143,12 @@ export default class UserCrud extends Component {
                     <td>
                         <button className="btn btn-warning" onClick={() => this.load(user)}>
                             <FontAwesomeIcon icon={faPencilAlt} />
+
                         </button>
                         <button className="btn btn-danger ml-2" onClick={() => this.remove(user)}>
                             <FontAwesomeIcon icon={faTrash} />
+                            <i className="faTrashAlt"></i>
+
                         </button>
                     </td>
                 </tr>
@@ -146,11 +156,13 @@ export default class UserCrud extends Component {
         })
     }
 
+
     render() {
         return (
             <Main {...headerProps}>
                 {this.renderForm()}
                 {this.renderTable()}
+
             </Main>
         )
     }
