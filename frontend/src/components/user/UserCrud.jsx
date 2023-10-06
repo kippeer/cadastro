@@ -45,16 +45,20 @@ export default class UserCrud extends Component {
         const url = user.id ? `${baseUrl}/${user.id}` : baseUrl
         axios[method](url, user)
             .then(resp => {
-                this.refreshList(); // Atualiza a lista após salvar
-                this.setState({ user: initialState.user })
+                // Atualiza o estado local para refletir a mudança após salvar
+                const updatedList = this.state.list.map(item => {
+                    if (item.id === resp.data.id) {
+                        return resp.data;
+                    }
+                    return item;
+                });
 
-                // Adiciona um atraso de 10 segundos antes de recarregar a página
-                setTimeout(() => {
-                    window.location.reload(); // Recarrega a página após o atraso
-                }, 5000);
+                this.setState({
+                    list: updatedList,
+                    user: initialState.user
+                });
             })
     }
-
     updateField(event) {
         const user = { ...this.state.user }
         user[event.target.name] = event.target.value
@@ -67,12 +71,12 @@ export default class UserCrud extends Component {
 
     remove(user) {
         axios.delete(`${baseUrl}/${user.id}`).then(resp => {
-            this.refreshList(); // Atualiza a lista após excluir
+            // Atualiza o estado local para refletir a mudança após excluir
+            const updatedList = this.state.list.filter(item => item.id !== user.id);
 
-            // Adiciona um atraso de 10 segundos antes de recarregar a página
-            setTimeout(() => {
-                window.location.reload(); // Recarrega a página após o atraso
-            }, 5000);
+            this.setState({
+                list: updatedList
+            });
         })
     }
 
