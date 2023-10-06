@@ -26,6 +26,7 @@ const Header = (props) => {
         <div>
           <h1>{props.title}</h1>
           <p>{props.subtitle}</p>
+          <p><strong>{props.alerta}</strong></p>
         </div>
       </div>
     </header>
