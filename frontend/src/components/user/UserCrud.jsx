@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Main from '../template/Main'
 import axios from 'axios'
-
+import { library } from '@fortawesome/fontawesome-svg-core';
 import { faPencilAlt, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -25,7 +25,9 @@ export default class UserCrud extends Component {
     }
 
     refreshList() {
-        axios(baseUrl).then(resp => {
+        const timestamp = new Date().getTime(); // Obtém um carimbo de data/hora único
+        const apiUrl = `${baseUrl}?timestamp=${timestamp}`; // Adiciona o carimbo de data/hora à URL da API
+        axios(apiUrl).then(resp => {
             this.setState({ list: resp.data })
         })
     }
@@ -40,7 +42,8 @@ export default class UserCrud extends Component {
         const url = user.id ? `${baseUrl}/${user.id}` : baseUrl
         axios[method](url, user)
             .then(resp => {
-                window.location.reload(); // Recarrega a página após salvar
+                this.refreshList(); // Atualiza a lista após salvar
+                this.setState({ user: initialState.user })
             })
     }
 
@@ -56,7 +59,7 @@ export default class UserCrud extends Component {
 
     remove(user) {
         axios.delete(`${baseUrl}/${user.id}`).then(resp => {
-            window.location.reload(); // Recarrega a página após excluir
+            this.refreshList(); // Atualiza a lista após excluir
         })
     }
 
