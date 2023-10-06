@@ -51,7 +51,7 @@ export default class UserCrud extends Component {
                 // Adiciona um atraso de 10 segundos antes de recarregar a página
                 setTimeout(() => {
                     window.location.reload(); // Recarrega a página após o atraso
-                }, 10000);
+                }, 5000);
             })
     }
 
@@ -72,7 +72,7 @@ export default class UserCrud extends Component {
             // Adiciona um atraso de 10 segundos antes de recarregar a página
             setTimeout(() => {
                 window.location.reload(); // Recarrega a página após o atraso
-            }, 10000);
+            }, 5000);
         })
     }
 
